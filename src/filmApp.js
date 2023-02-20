@@ -3,10 +3,14 @@ import './App.css';
 import GetDevelopApp from './components/developApp';
 import GetRegistrationApp from "./components/registrationPage";
 import GetLoginApp from "./components/LoginPage";
+import GetCommunityApp from "./components/communityApp";
 export default function
     FilmApp(){
-    const [currentPage, updateCurrentPage] = useState('develop');
-    const [username, updateUsername] = useState('')
+    const [previousPage, updatePreviousPage] = useState('');
+    const [currentPage, updateCurrentPage] = useState('login');
+    const [username, updateUsername] = useState('testing');
+    const [userID, updateUserID] = useState(null);
+    const [url, updateURL] = useState("http://192.168.1.204:4000");
     return(<React.Fragment>{GetNavBar()}{GetCurrentPage(currentPage)}</React.Fragment>);
 
     function
@@ -16,9 +20,11 @@ export default function
                 <nav className="navbar navbar-expand navbar-dark bg-dark">
                     <div className="collapse navbar-collapse d-inline-flex justify-content-center p-2" id="navbarNav">
                         <ul className="navbar-nav">
-                            <a key = "D" className = "nav-link" onClick={() => updateCurrentPage('develop')} href = '#'>develop</a>
+                            <a key = "D" className = "nav-link" onClick={() => updateCurrentPage('develop')} href = '#'>Develop</a>
+                            <a key = "C" className = "nav-link" onClick={() => updateCurrentPage('community')} href = '#'>Community</a>
                             <a key = "U" className = "nav-link"  href = '#'>{username}</a>
                             <a key = "L" className = "nav-link" onClick={() => GetLoginOutFunction()} href = '#'>{GetLoginStatus()}</a>
+
                         </ul>
                     </div >
                 </nav>
@@ -27,20 +33,26 @@ export default function
     function
     GetLoginPage(){
         return(
-            <div><GetLoginApp updateCurrentPage = {updateCurrentPage} updateUserName = {updateUsername}/></div>
+            <div><GetLoginApp apiURL = {url} updateCurrentPage = {updateCurrentPage} updateUserName = {updateUsername} previousPage={previousPage} updatePreviousPage={updatePreviousPage} updateUserID={updateUserID}/></div>
+        );
+    }
+    function
+    GetCommunityPage(){
+        return(
+            <div><GetCommunityApp apiURL ={url} username={username} userId={userID} updateCurrentPage = {updateCurrentPage} updatePreviousPage = {updatePreviousPage}/></div>
         );
     }
     function
     GetRegistrationPage(){
         return(
-            <div><GetRegistrationApp/></div>
+            <div><GetRegistrationApp apiURL ={url} updateCurrentPage={updateCurrentPage} updatePreviousPage={updatePreviousPage}/></div>
         );
     }
     function
     GetDevelopPage(){
 
         return(
-            <div><GetDevelopApp/></div>
+            <div><GetDevelopApp apiURL = {url}/></div>
         );
 
     }
@@ -65,8 +77,9 @@ export default function
     GetCurrentPage(CurrentPage){
         if (CurrentPage === 'register') return(GetRegistrationPage());
         if (CurrentPage === 'develop') return(GetDevelopPage());
-
-        if (CurrentPage === 'login') {console.log('login')
-        return(GetLoginPage());}
+        if (CurrentPage === 'community') return(GetCommunityPage());
+        if (CurrentPage === 'login') {
+            return(GetLoginPage());
+        }
     }
 }

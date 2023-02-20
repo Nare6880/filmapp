@@ -3,7 +3,7 @@ import {CountdownCircleTimer} from "react-countdown-circle-timer";
 import axios from "axios";
 import "../App.css"
 export default function
-GetDevelopApp() {
+GetDevelopApp({apiURL}) {
     const [developers, setDevelopers] = useState(['Select Film']);
     const [films, setFilms] = useState(['']);
     const [dil, setDil] = useState(['Select Film and Developer']);
@@ -19,7 +19,7 @@ GetDevelopApp() {
         try{
             if (dilutionRequested && dilutionSelected !== '' && !timeRequested){
                 setTimeRequested(true);
-                await axios.get("http://localhost:4000/t", {
+                await axios.get((apiURL+ "/t"), {
                     params:{
                         film : filmSelected,
                         developer: devSelected,
@@ -45,7 +45,7 @@ GetDevelopApp() {
         try {
             if (!dilutionRequested && filmSelected !== '' && devSelected !== '') {
                 setDilutionRequested(true);
-                await axios.get("http://localhost:4000/dil", {
+                await axios.get((apiURL+ "/dil"), {
                     params:{
                         film : filmSelected,
                         developer: devSelected
@@ -75,7 +75,7 @@ GetDevelopApp() {
         try {
             if (!filmRequested) {
                 setFilmRequested(true);
-                await axios.get("http://localhost:4000/f"
+                await axios.get((apiURL + "/f")
                 ).then(function (response) {
                     accum.push('Select Film');
                     for (let i = 0; i < response.data.length; i++) {
@@ -88,6 +88,7 @@ GetDevelopApp() {
         }
         catch(e){
             console.log(e);
+            console.log("probHere")
         }
     }
     function getDevDropDown(){
@@ -101,7 +102,7 @@ GetDevelopApp() {
         try {
             if (!devRequested && filmSelected !== '') {
                 setDevRequested(true);
-                await axios.get("http://localhost:4000/d", {
+                await axios.get((apiURL+ "/d"), {
                     params:{
                         film : filmSelected
                     }

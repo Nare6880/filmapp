@@ -2,7 +2,7 @@ import React,  { Component, useState }  from "react";
 import axios from "axios";
 import "../App.css"
 export default function
-GetRegistrationApp() {
+GetRegistrationApp({updateCurrentPage}) {
     const [email, setEmail] = useState("");
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
@@ -16,6 +16,10 @@ GetRegistrationApp() {
                     email,username, password, confirmPassword
                 }).then(function (response){
                     console.log(response)
+                    if (response.data === "Registered"){
+                        console.log('shouldhave changed')
+                        updateCurrentPage('login');
+                    }
                 });
 
             }
